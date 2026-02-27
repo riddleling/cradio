@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Hit FM台北之音廣播",
+        "url": "http://202.39.43.67:1935/live/RA000036/chunklist.m3u8"
+    },
+    {
+        "name": "寶島新聲廣播電台",
+        "url": "http://125.227.87.206:8000/FM98.5"
+    },
+    {
+        "name": "教育廣播電臺-臺北總臺FM臺",
+        "url": "https://cast.ner.gov.tw/1"
+    },
+    {
+        "name": "教育廣播電臺-高雄分臺",
+        "url": "https://cast.ner.gov.tw/5"
+    },
+    {
+        "name": "飛碟聯播網 南台灣之聲",
+        "url": "http://cast.uforadio.com.tw:8000/kao-stream"
+    },
+    {
+        "name": "古典音樂台 FM 97.7",
+        "url": "http://59.120.88.155:8000/live.mp3"
+    },
+    {
+        "name": "城市廣播網-城市廣播",
+        "url": "http://fm929.cityfm.tw:8080/929.mp3"
+    },
+    {
+        "name": "城市廣播網-台南知音",
+        "url": "http://fm971.cityfm.tw:8080/971.mp3"
+    },
+    {
+        "name": "Phate Radio (音樂/動漫)",
+        "url": "http://phate.io/listen"
+    },
+    {
+        "name": "台北廣播電台",
+        "url": "https://stream.ginnet.cloud/live0130lo-yfyo/_definst_/fm/playlist.m3u8"
+    },
+    {
+        "name": "中央廣播電台",
+        "url": "https://streamak0138.akamaized.net/live0138lh-mbm9/_definst_/rti3/chunklist.m3u8"
+    },
+    {
+        "name": "佳音經典音樂網",
+        "url": "https://stream.ginnet.cloud/live0119lo-p4rb/_definst_/classic/playlist.m3u8"
+    },
+    {
+        "name": "佳音音樂網",
+        "url": "https://stream.ginnet.cloud/live0119lo-p4rb/_definst_/modern/playlist.m3u8"
+    },
+    {
+        "name": "台北流行音樂廣播",
+        "url": "http://202.39.43.67:1935/live/RA000080/chunklist.m3u8"
+    },
+    {
+        "name": "警察廣播電臺 - 高雄分臺 FM 93.1",
+        "url": "https://stream.pbs.gov.tw/live/KSS/playlist.m3u8"
+    },
+    {
+        "name": "世新廣播電台",
+        "url": "https://stream.ginnet.cloud/live0115lo-89xv/_definst_/fm881/playlist.m3u8"
+    },
+    {
+        "name": "正聲廣播公司",
+        "url": "https://flv.ccdntech.com/live/_definst_/mp4:vod117_Live/live1/playlist.m3u8"
+    }
+]
