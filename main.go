@@ -15,7 +15,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-const version = "1.0.2"
+const version = "1.0.3"
 
 type Station struct {
 	Name string `json:"name"`
@@ -90,7 +90,7 @@ func initialModel(stations []Station) model {
 	l.Title = "電台列表"
 	l.SetShowStatusBar(true)
 	l.SetFilteringEnabled(true)
-	l.SetShowHelp(true)
+	l.SetShowHelp(false)
 
 	return model{
 		l:      l,
