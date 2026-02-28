@@ -122,7 +122,7 @@ func (p *player) Stop() error {
 func resolveMPVPath() (string, error) {
 	mpvPath, err := exec.LookPath("mpv")
 	if err != nil {
-		return "", errors.New("找不到 mpv，請先安裝：winget install mpv 或 winget install shinchiro.mpv")
+		return "", errors.New("找不到 mpv，請先安裝 mpv")
 	}
 
 	// Windows：如果找到的是 mpv.com，優先嘗試同目錄的 mpv.exe（避免 wrapper/console stub 行為）
