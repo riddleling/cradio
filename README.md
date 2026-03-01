@@ -43,6 +43,14 @@ go build
 ./cradio
 ```
 
+## 鍵盤操作
+
+- `↑`、`↓`：選台
+- `Enter`：播放/切台
+- `s`：停止播放
+- `q`：退出程式
+- `/`：搜尋電台
+
 ## License
 
 MIT License
