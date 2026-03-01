@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -15,7 +16,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-const version = "1.0.3"
+const version = "1.0.4"
 
 type Station struct {
 	Name string `json:"name"`
@@ -30,6 +31,100 @@ func (i stationItem) Title() string       { return i.s.Name }
 func (i stationItem) Description() string { return "" }
 func (i stationItem) FilterValue() string { return i.s.Name }
 
+// ===== Styles =====
+
+var (
+	appTitleStyle = lipgloss.NewStyle().Bold(true)
+	statusStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("10"))
+	errorStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("9"))
+	helpStyle     = lipgloss.NewStyle().Faint(true)
+
+	// 選中行的樣式（你可自行改顏色）
+	selectedStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("205")).
+			Bold(true)
+
+	normalStyle = lipgloss.NewStyle()
+
+	// 搜尋命中「額外效果」：不要指定顏色，讓 baseStyle（normal/selected）統一控制顏色
+	filterMatchExtra = lipgloss.NewStyle().
+				Underline(true).
+				Bold(true)
+)
+
+// ===== Search highlight helper =====
+// 重要：用 baseStyle 分段渲染，命中段用 base + extra，才能讓「整行選中顏色」也套用到命中段。
+func renderWithHighlight(text, query string, base lipgloss.Style, matchExtra lipgloss.Style) string {
+	q := strings.TrimSpace(query)
+	if q == "" {
+		return base.Render(text)
+	}
+
+	lt := strings.ToLower(text)
+	lq := strings.ToLower(q)
+
+	matchStyle := base.Copy().Inherit(matchExtra)
+
+	var b strings.Builder
+	start := 0
+	for {
+		i := strings.Index(lt[start:], lq)
+		if i < 0 {
+			b.WriteString(base.Render(text[start:]))
+			break
+		}
+		i += start
+
+		b.WriteString(base.Render(text[start:i]))
+		b.WriteString(matchStyle.Render(text[i : i+len(q)]))
+
+		start = i + len(q)
+	}
+	return b.String()
+}
+
+// ===== Custom single-line delegate (no blank lines) =====
+
+type singleLineDelegate struct{}
+
+func (d singleLineDelegate) Height() int  { return 1 }
+func (d singleLineDelegate) Spacing() int { return 0 }
+func (d singleLineDelegate) Update(msg tea.Msg, m *list.Model) tea.Cmd {
+	return nil
+}
+
+func (d singleLineDelegate) Render(w io.Writer, m list.Model, index int, item list.Item) {
+	i, ok := item.(stationItem)
+	if !ok {
+		return
+	}
+
+	rawName := i.Title()
+
+	filterState := m.FilterState()
+	filteringNow := (filterState == list.Filtering) // 正在輸入搜尋時
+
+	// ✅ 搜尋輸入時不要顯示 ▶、不要選中顏色
+	isSelected := (!filteringNow && index == m.Index())
+
+	baseStyle := normalStyle
+	prefix := "  "
+	if isSelected {
+		baseStyle = selectedStyle
+		prefix = "▶ "
+	}
+
+	// 文字：搜尋時做命中高亮（同時保留整行選中顏色一致性）
+	var name string
+	if filterState == list.Filtering || filterState == list.FilterApplied {
+		name = renderWithHighlight(rawName, m.FilterValue(), baseStyle, filterMatchExtra)
+	} else {
+		name = baseStyle.Render(rawName)
+	}
+
+	fmt.Fprint(w, baseStyle.Render(prefix)+name)
+}
+
 // ===== Bubble Tea model =====
 
 type model struct {
@@ -40,13 +135,6 @@ type model struct {
 
 	p *player
 }
-
-var (
-	appTitleStyle = lipgloss.NewStyle().Bold(true)
-	statusStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("10"))
-	errorStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("9"))
-	helpStyle     = lipgloss.NewStyle().Faint(true)
-)
 
 func loadStationsFromJSON(path string) ([]Station, error) {
 	b, err := os.ReadFile(path)
@@ -82,10 +170,7 @@ func initialModel(stations []Station) model {
 		items = append(items, stationItem{s: st})
 	}
 
-	delegate := list.NewDefaultDelegate()
-	delegate.ShowDescription = false
-	delegate.SetHeight(1)
-
+	delegate := singleLineDelegate{}
 	l := list.New(items, delegate, 0, 0)
 	l.Title = "電台列表"
 	l.SetShowStatusBar(true)
