@@ -16,7 +16,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-const version = "1.0.4"
+const version = "1.0.5"
 
 type Station struct {
 	Name string `json:"name"`
@@ -41,15 +41,13 @@ var (
 
 	// 選中行的樣式（你可自行改顏色）
 	selectedStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("205")).
-			Bold(true)
+			Foreground(lipgloss.Color("#ee6ff8"))
 
 	normalStyle = lipgloss.NewStyle()
 
 	// 搜尋命中「額外效果」：不要指定顏色，讓 baseStyle（normal/selected）統一控制顏色
 	filterMatchExtra = lipgloss.NewStyle().
-				Underline(true).
-				Bold(true)
+				Underline(true)
 )
 
 // ===== Search highlight helper =====
@@ -104,7 +102,7 @@ func (d singleLineDelegate) Render(w io.Writer, m list.Model, index int, item li
 	filterState := m.FilterState()
 	filteringNow := (filterState == list.Filtering) // 正在輸入搜尋時
 
-	// ✅ 搜尋輸入時不要顯示 ▶、不要選中顏色
+	// 搜尋輸入時不要顯示 ▶、不要選中顏色
 	isSelected := (!filteringNow && index == m.Index())
 
 	baseStyle := normalStyle
