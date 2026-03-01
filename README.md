@@ -51,6 +51,11 @@ go build
 - `q`：退出程式
 - `/`：搜尋電台
 
+## 子專案
+
+[RadioListUpdater](https://github.com/riddleling/RadioListUpdater) 是 CRadio 的子專案，用來更新電台列表 (`台北愛樂電台`與`港都電台`)。
+
+
 ## License
 
 MIT License
