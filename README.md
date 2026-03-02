@@ -55,6 +55,9 @@ go build
 
 [RadioListUpdater](https://github.com/riddleling/RadioListUpdater) 是 CRadio 的子專案，用來更新電台列表 (`台北愛樂電台`與`港都電台`)。
 
+## 問題
+
+- macOS 上如果播放沒聲音，請參考 [issue #1](https://github.com/riddleling/cradio/issues/1) 重新安裝 mpv。
 
 ## License
 
